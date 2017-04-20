@@ -1,0 +1,92 @@
+body {
+	color: #6f6f6f;
+	font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+
+.app {
+	display: flex;
+	flex-direction: column;
+}
+
+
+.app .logo {
+	/* font is aldo the apache from dafont.com */
+	content: url("../img/logo.png");
+	width: 300px;
+	opacity: 0.6;
+	margin: 10px 0px;
+}
+
+.app .tagline {
+	/* font is aldo the apache from dafont.com */
+	content: url("../img/description.png");
+	width: 200px;
+	opacity: 0.6;
+	margin: 10px 20px;
+}
+
+.api {
+	border: 1px solid grey;
+	border-radius: 7px;
+	padding: 20px;
+	margin-bottom: 30px;
+	background-color: white;
+}
+
+.api .header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin-bottom: 50px;
+	border: 3px solid grey;
+	padding: 0px;
+	border-radius: 7px;
+}
+
+.header .method {
+	width: 143px;
+	/*padding-left: 50px;*/
+	padding: 10px 0px;
+	margin: 0px;
+	text-align: center;
+	color: white;
+	border-radius: 2px;
+}
+
+.method.get {
+	background-color: #00b464;
+}
+
+.method.post {
+	background-color: #ffd200;
+
+}
+
+.method.put {
+	background-color: #0096ff;
+}
+
+.method.delete {
+	background-color: #c80000;
+}
+
+.header .url {
+	width: 1200px;
+	margin: 0px;
+	padding: 10px 0px 10px 30px;
+	border-left: 3px solid grey;
+	background-color: #efefef;
+}
+
+.button {
+	width: 240px;
+	height: 40px;
+	margin-top: 20px;
+	font-size: 14px;
+	background-color: #efefef;
+	border-radius: 5px;
+	border: 3px solid grey;
+	color: grey;
+	font-weight: bolder;
+	font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
