@@ -81,7 +81,7 @@ body {
 .button {
 	width: 240px;
 	height: 40px;
-	margin-top: 20px;
+	margin: 20px 0px;
 	font-size: 14px;
 	background-color: #efefef;
 	border-radius: 5px;
@@ -89,4 +89,8 @@ body {
 	color: grey;
 	font-weight: bolder;
 	font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+
+.apiresponse {
+	white-space: pre;
 }

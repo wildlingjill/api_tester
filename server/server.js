@@ -18,8 +18,10 @@ var gasObject = {
 	ownerName: "Jill Robinson",
 	emailAddress: "jill@coding.com",
 	carMake: "Mazda 3",
-	gasLevel: "70%",
-	gasType: "Premium",
+	gasData: {
+		gasLevel: "70%",
+		gasType: "Premium",
+	}
 }
 
 // serves html file with get request and res.sendFile

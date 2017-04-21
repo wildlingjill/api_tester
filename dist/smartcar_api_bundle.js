@@ -58,6 +58,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	// renders the App component to the html page, inside the container div
 	_reactDom2.default.render(_react2.default.createElement(_App.App, null), document.getElementById("container"));
 
 /***/ }),
@@ -22028,21 +22029,28 @@
 				// prevent default stops a full-page form submission
 				event.preventDefault();
 
+				// if form data does not pass the validation checks, return early and end the onClick function
 				if (!event.target.checkValidity()) {
 					return;
 				}
 
+				// contains http method and headers
 				var initVar = {
 					method: this.props.method,
 					headers: this.props.headers
 				};
 
+				// don't want an http body if it's for a get request, just for post/put/delete
 				if (this.props.method !== "GET") {
+					// if not a get method, create a body key that's equal to the data taken from the html form
 					initVar.body = JSON.stringify(this.state.formData);
 				}
 
+				// http request using fetch to the API url, pass in the method/headers/body, return a promise
 				fetch(this.props.url, initVar).then(function (response) {
+					// when response returns, .json returns a json object, and then passes it into the callback function
 					response.json().then(function (object) {
+						// set the response object in state for displaying on the page
 						_this2.setState({ response: object });
 					});
 				});
@@ -22084,6 +22092,8 @@
 							"Description: ",
 							this.props.description
 						),
+
+						// headers contained in an object, so use map to cycle over each one and place it in a p tag
 						Object.keys(this.props.headers).map(function (header, i) {
 							return _react2.default.createElement(
 								"div",
@@ -22105,8 +22115,8 @@
 
 							// && statements resolve to condition on right side of statement, e.g. map(), if true
 							// e.g. 1 && 2 gives 2, 1 && 0 gives 0
-							// in this case, if body is null, won't run map
-							// like a short-hand for a ternary without a falsey value
+							// in this case, if body is null, won't run map, so like a short-hand for a ternary without a falsey value
+							// use map again to cycle through the body and return a label and form input for each key
 							this.props.body && this.props.body.map(function (bodyField, i) {
 								return _react2.default.createElement(
 									"div",
@@ -22156,6 +22166,9 @@
 		return Button;
 	}(_react2.default.Component);
 
+	// component for http response
+
+
 	var ApiResponse = exports.ApiResponse = function (_React$Component3) {
 		_inherits(ApiResponse, _React$Component3);
 
@@ -22168,24 +22181,19 @@
 		_createClass(ApiResponse, [{
 			key: "render",
 			value: function render() {
-				var _this6 = this;
-
 				return _react2.default.createElement(
 					"div",
-					null,
-					this.props.response && Object.keys(this.props.response).map(function (data, i) {
-						return _react2.default.createElement(
-							"div",
-							{ key: i },
-							_react2.default.createElement(
-								"p",
-								null,
-								data,
-								": ",
-								_this6.props.response[data]
-							)
-						);
-					})
+					{ className: "apiresponse" },
+					JSON.stringify(this.props.response, null, 4)
+					// // same as for the body and headers, if the response exists in props, cycle through it using map and assign each key to a p tag
+					// this.props.response && Object.keys(this.props.response).map( (data, i) => {
+					// 	return (
+					// 		<div key={i}>
+					// 			<p>{data}: {this.props.response[data]}</p>
+					// 		</div>
+					// 	);
+					// })
+
 				);
 			}
 		}]);
