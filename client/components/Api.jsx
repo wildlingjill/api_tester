@@ -109,15 +109,8 @@ export class ApiResponse extends React.Component {
 		return (
 			<div className="apiresponse">
 				{
+					// returns the response as a json data, indented 4 spaces
 					JSON.stringify(this.props.response, null, 4)
-					// // same as for the body and headers, if the response exists in props, cycle through it using map and assign each key to a p tag
-					// this.props.response && Object.keys(this.props.response).map( (data, i) => {
-					// 	return (
-					// 		<div key={i}>
-					// 			<p>{data}: {this.props.response[data]}</p>
-					// 		</div>
-					// 	);
-					// })
 				}
 			</div>
 		);
