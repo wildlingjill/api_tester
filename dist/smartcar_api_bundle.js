@@ -21795,9 +21795,7 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.ApiResponse = exports.Button = exports.Api = exports.App = undefined;
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	exports.App = undefined;
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -21807,19 +21805,19 @@
 
 	var _endpoints = __webpack_require__(183);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	var _Api = __webpack_require__(184);
 
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	// import endpoints array so we can access the http headers, body etc. for sending in the http request
 
-	// react components need to be div for each api, name/method header, info about call, response body info
-	// one component with three others inside it
 
+	// app component renders page as a whole, containing the header and api sections
 	var App = exports.App = function (_React$Component) {
 		_inherits(App, _React$Component);
 
@@ -21841,206 +21839,16 @@
 						_react2.default.createElement("img", { className: "logo" }),
 						_react2.default.createElement("img", { className: "tagline" })
 					),
+
+					// for each object in the endpoints array, want to make a new instantiation of the Api component containing the method, url, name etc.
 					_endpoints.endpoints.map(function (endpoint) {
-						return _react2.default.createElement(Api, { key: endpoint.method + endpoint.url, name: endpoint.name, url: endpoint.url, method: endpoint.method, headers: endpoint.headers, body: endpoint.body, description: endpoint.description });
+						return _react2.default.createElement(_Api.Api, { key: endpoint.method + endpoint.url, name: endpoint.name, url: endpoint.url, method: endpoint.method, headers: endpoint.headers, body: endpoint.body, description: endpoint.description });
 					})
 				);
 			}
 		}]);
 
 		return App;
-	}(_react2.default.Component);
-
-	var Api = exports.Api = function (_React$Component2) {
-		_inherits(Api, _React$Component2);
-
-		function Api() {
-			_classCallCheck(this, Api);
-
-			var _this2 = _possibleConstructorReturn(this, (Api.__proto__ || Object.getPrototypeOf(Api)).call(this));
-			// super calls constructor method on base class (react component)
-
-
-			_this2.state = { formData: {} };
-			return _this2;
-		}
-
-		_createClass(Api, [{
-			key: "onBlur",
-			value: function onBlur(event) {
-				this.setState({ formData: _extends({}, this.state.formData, _defineProperty({}, event.target.name, event.target.value)) });
-				event.target.checkValidity();
-			}
-		}, {
-			key: "onClick",
-			value: function onClick(event) {
-				var _this3 = this;
-
-				event.preventDefault();
-
-				if (!event.target.checkValidity()) {
-					return;
-				}
-
-				var initVar = {
-					method: this.props.method,
-					headers: this.props.headers
-				};
-
-				if (this.props.method !== "GET") {
-					initVar.body = JSON.stringify(this.state.formData);
-				}
-
-				fetch(this.props.url, initVar).then(function (response) {
-					response.json().then(function (object) {
-						_this3.setState({ response: object });
-					});
-				});
-			}
-		}, {
-			key: "render",
-			value: function render() {
-				var _this4 = this;
-
-				return _react2.default.createElement(
-					"div",
-					{ className: "api" },
-					_react2.default.createElement(
-						"div",
-						null,
-						_react2.default.createElement(
-							"div",
-							{ className: "header" },
-							_react2.default.createElement(
-								"h1",
-								{ className: ["method", this.props.method.toLowerCase()].join(" ") },
-								this.props.method
-							),
-							_react2.default.createElement(
-								"h1",
-								{ className: "url" },
-								this.props.url
-							)
-						),
-						_react2.default.createElement(
-							"p",
-							null,
-							"Name: ",
-							this.props.name
-						),
-						_react2.default.createElement(
-							"p",
-							null,
-							"Description: ",
-							this.props.description
-						),
-						Object.keys(this.props.headers).map(function (header, i) {
-							return _react2.default.createElement(
-								"div",
-								{ key: i },
-								_react2.default.createElement(
-									"p",
-									null,
-									header,
-									": ",
-									_this4.props.headers[header]
-								)
-							);
-						}),
-						_react2.default.createElement(
-							"form",
-							{ onSubmit: function onSubmit(event) {
-									return _this4.onClick(event);
-								} },
-
-							// && statements resolve to condition on right side of statement, e.g. map(), if true
-							// e.g. 1 && 2 gives 2, 1 && 0 gives 0
-							// in this case, if body is null, won't run map
-							// like a short-hand for a ternary without a falsey value
-							this.props.body && this.props.body.map(function (bodyField, i) {
-								return _react2.default.createElement(
-									"div",
-									{ key: i },
-									_react2.default.createElement(
-										"p",
-										null,
-										bodyField.label,
-										": ",
-										_react2.default.createElement("input", { name: bodyField.name, type: bodyField.type || "text", placeholder: bodyField.placeholder, required: bodyField.required || false, maxLength: bodyField.max, minLength: bodyField.min, pattern: bodyField.pattern, onChange: function onChange(event) {
-												return _this4.onBlur(event);
-											} })
-									)
-								);
-							}),
-							_react2.default.createElement(Button, null)
-						)
-					),
-					_react2.default.createElement(ApiResponse, { response: this.state.response })
-				);
-			}
-		}]);
-
-		return Api;
-	}(_react2.default.Component);
-
-	var Button = exports.Button = function (_React$Component3) {
-		_inherits(Button, _React$Component3);
-
-		function Button() {
-			_classCallCheck(this, Button);
-
-			return _possibleConstructorReturn(this, (Button.__proto__ || Object.getPrototypeOf(Button)).apply(this, arguments));
-		}
-
-		_createClass(Button, [{
-			key: "render",
-			value: function render() {
-				return _react2.default.createElement(
-					"button",
-					{ className: "button" },
-					"Send API Call"
-				);
-			}
-		}]);
-
-		return Button;
-	}(_react2.default.Component);
-
-	var ApiResponse = exports.ApiResponse = function (_React$Component4) {
-		_inherits(ApiResponse, _React$Component4);
-
-		function ApiResponse() {
-			_classCallCheck(this, ApiResponse);
-
-			return _possibleConstructorReturn(this, (ApiResponse.__proto__ || Object.getPrototypeOf(ApiResponse)).apply(this, arguments));
-		}
-
-		_createClass(ApiResponse, [{
-			key: "render",
-			value: function render() {
-				var _this7 = this;
-
-				return _react2.default.createElement(
-					"div",
-					null,
-					this.props.response && Object.keys(this.props.response).map(function (data, i) {
-						return _react2.default.createElement(
-							"div",
-							{ key: i },
-							_react2.default.createElement(
-								"p",
-								null,
-								data,
-								": ",
-								_this7.props.response[data]
-							)
-						);
-					})
-				);
-			}
-		}]);
-
-		return ApiResponse;
 	}(_react2.default.Component);
 
 /***/ }),
@@ -22153,6 +21961,237 @@
 			pattern: "\\d\\d\\d-\\d\\d\\d\\d"
 		}]
 	}];
+
+/***/ }),
+/* 184 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.ApiResponse = exports.Button = exports.Api = undefined;
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	// Sorry about the length of this component! Ideally would split it up further
+	// Api component renders the info for each api call
+	var Api = exports.Api = function (_React$Component) {
+		_inherits(Api, _React$Component);
+
+		// constructor called to set the state
+		function Api() {
+			_classCallCheck(this, Api);
+
+			// creating the state object with the formData key in it, initially set to an empty object
+			var _this = _possibleConstructorReturn(this, (Api.__proto__ || Object.getPrototypeOf(Api)).call(this));
+			// super calls constructor method on base class (react component)
+
+
+			_this.state = { formData: {} };
+			return _this;
+		}
+
+		// onBlur used as onChange registered a change on every key press, rather than just at the end of user input in the form field
+
+
+		_createClass(Api, [{
+			key: "onBlur",
+			value: function onBlur(event) {
+				// sets the formData key as equal to the existing formData value, plus creates keys for any new info taken from the form by setting event.target.name = event.target.value
+				this.setState({ formData: _extends({}, this.state.formData, _defineProperty({}, event.target.name, event.target.value)) });
+				// run a validity check on the data for validation before submission, e.g. is it a required field, does it contain the right number of characters etc.
+				event.target.checkValidity();
+			}
+		}, {
+			key: "onClick",
+			value: function onClick(event) {
+				var _this2 = this;
+
+				// prevent default stops a full-page form submission
+				event.preventDefault();
+
+				if (!event.target.checkValidity()) {
+					return;
+				}
+
+				var initVar = {
+					method: this.props.method,
+					headers: this.props.headers
+				};
+
+				if (this.props.method !== "GET") {
+					initVar.body = JSON.stringify(this.state.formData);
+				}
+
+				fetch(this.props.url, initVar).then(function (response) {
+					response.json().then(function (object) {
+						_this2.setState({ response: object });
+					});
+				});
+			}
+		}, {
+			key: "render",
+			value: function render() {
+				var _this3 = this;
+
+				return _react2.default.createElement(
+					"div",
+					{ className: "api" },
+					_react2.default.createElement(
+						"div",
+						null,
+						_react2.default.createElement(
+							"div",
+							{ className: "header" },
+							_react2.default.createElement(
+								"h1",
+								{ className: ["method", this.props.method.toLowerCase()].join(" ") },
+								this.props.method
+							),
+							_react2.default.createElement(
+								"h1",
+								{ className: "url" },
+								this.props.url
+							)
+						),
+						_react2.default.createElement(
+							"p",
+							null,
+							"Name: ",
+							this.props.name
+						),
+						_react2.default.createElement(
+							"p",
+							null,
+							"Description: ",
+							this.props.description
+						),
+						Object.keys(this.props.headers).map(function (header, i) {
+							return _react2.default.createElement(
+								"div",
+								{ key: i },
+								_react2.default.createElement(
+									"p",
+									null,
+									header,
+									": ",
+									_this3.props.headers[header]
+								)
+							);
+						}),
+						_react2.default.createElement(
+							"form",
+							{ onSubmit: function onSubmit(event) {
+									return _this3.onClick(event);
+								} },
+
+							// && statements resolve to condition on right side of statement, e.g. map(), if true
+							// e.g. 1 && 2 gives 2, 1 && 0 gives 0
+							// in this case, if body is null, won't run map
+							// like a short-hand for a ternary without a falsey value
+							this.props.body && this.props.body.map(function (bodyField, i) {
+								return _react2.default.createElement(
+									"div",
+									{ key: i },
+									_react2.default.createElement(
+										"p",
+										null,
+										bodyField.label,
+										": ",
+										_react2.default.createElement("input", { name: bodyField.name, type: bodyField.type || "text", placeholder: bodyField.placeholder, required: bodyField.required || false, maxLength: bodyField.max, minLength: bodyField.min, pattern: bodyField.pattern, onChange: function onChange(event) {
+												return _this3.onBlur(event);
+											} })
+									)
+								);
+							}),
+							_react2.default.createElement(Button, null)
+						)
+					),
+					_react2.default.createElement(ApiResponse, { response: this.state.response })
+				);
+			}
+		}]);
+
+		return Api;
+	}(_react2.default.Component);
+
+	var Button = exports.Button = function (_React$Component2) {
+		_inherits(Button, _React$Component2);
+
+		function Button() {
+			_classCallCheck(this, Button);
+
+			return _possibleConstructorReturn(this, (Button.__proto__ || Object.getPrototypeOf(Button)).apply(this, arguments));
+		}
+
+		_createClass(Button, [{
+			key: "render",
+			value: function render() {
+				return _react2.default.createElement(
+					"button",
+					{ className: "button" },
+					"Send API Call"
+				);
+			}
+		}]);
+
+		return Button;
+	}(_react2.default.Component);
+
+	var ApiResponse = exports.ApiResponse = function (_React$Component3) {
+		_inherits(ApiResponse, _React$Component3);
+
+		function ApiResponse() {
+			_classCallCheck(this, ApiResponse);
+
+			return _possibleConstructorReturn(this, (ApiResponse.__proto__ || Object.getPrototypeOf(ApiResponse)).apply(this, arguments));
+		}
+
+		_createClass(ApiResponse, [{
+			key: "render",
+			value: function render() {
+				var _this6 = this;
+
+				return _react2.default.createElement(
+					"div",
+					null,
+					this.props.response && Object.keys(this.props.response).map(function (data, i) {
+						return _react2.default.createElement(
+							"div",
+							{ key: i },
+							_react2.default.createElement(
+								"p",
+								null,
+								data,
+								": ",
+								_this6.props.response[data]
+							)
+						);
+					})
+				);
+			}
+		}]);
+
+		return ApiResponse;
+	}(_react2.default.Component);
 
 /***/ })
 /******/ ]);
