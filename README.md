@@ -1,4 +1,4 @@
-# API testing app
+# Papirus - API testing app
 
 App to test API endpoints and responses.
 
