@@ -5,7 +5,7 @@ module.exports = {
 
   output: {
 	// name of the outputted compiled file
-    filename: 'smartcar_api_bundle.js'
+    filename: 'papirus_api_bundle.js'
   },
   module: {
     loaders: [

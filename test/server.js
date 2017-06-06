@@ -5,6 +5,7 @@ var request = require("request");
 // description of the functionality we want to test
 describe("API Testing tool", function() {
 
+
 	describe("Get gas details", function() {
 
 		// store the full path to the resource we want to test in a variable, run server on port 6789 - in a bigger test suite would probably store the host part of the url in a global variable to reuse
@@ -34,6 +35,7 @@ describe("API Testing tool", function() {
 
 	});
 
+
 	// tests the post request to the url to create a new gas delivery
 	describe("Create delivery date", function() {
 
@@ -57,6 +59,7 @@ describe("API Testing tool", function() {
 
 	});
 
+
 	// tests the put request to the url to update the gas delivery
 	describe("Update delivery date", function() {
 
@@ -79,6 +82,7 @@ describe("API Testing tool", function() {
 		});
 
 	});
+
 
 	// testing the delete request to delete a gas delivery
 	describe("Delete delivery date", function() {
